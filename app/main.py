@@ -7,7 +7,7 @@ from app.core.database import Base, engine, get_db
 
 from app.models import Category, Product, Inventory, User
 from app.routers.auth import router as auth_router
-
+from app.routers.users import router as users_router
 
 
   #Create database tables
@@ -23,6 +23,7 @@ app = FastAPI(
 
   # Add Authentication routes
 app.include_router(auth_router)
+app.include_router(users_router)
 
 @app.get("/")
 def root():
