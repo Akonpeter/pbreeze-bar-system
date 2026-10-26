@@ -21,7 +21,7 @@ class UserCreate(BaseModel):
         max_length=72,
     )
 
-    role: str = "staff"
+    
 
 
 class UserLogin(BaseModel):
@@ -45,6 +45,14 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
 
+
+     # Only admin assign role
+class AdminUserCreate(BaseModel):
+    full_name: str = Field(min_length=2, max_length=150)
+    email: EmailStr
+    username: str = Field(min_length=3, max_length=100)
+    password: str = Field(min_length=6, max_length=72)
+    role: str 
 
 # from pydantic import BaseModel, EmailStr, Field
 
