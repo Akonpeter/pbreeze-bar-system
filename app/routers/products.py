@@ -149,3 +149,40 @@ def update_product(
     return product
 
 
+
+
+@router.delete("/{product_id}")
+def delete_product(
+    product_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(require_roles("admin", "manager")),
+):
+    # Find the product.
+    product = db.query(Product).filter(
+        Product.id == product_id
+    ).first()
+
+    if product is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+
+    
+    # Check whether the product has an inventory record.
+    if product.inventory is not None:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This product has an inventory record and cannot be deleted.",
+        )
+    
+    # Delete the product.
+    db.delete(product)
+    db.commit()
+
+    return {
+        "message": "Product deleted successfully"
+    }
+
+
