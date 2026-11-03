@@ -99,3 +99,58 @@ def get_inventory(
         )
 
     return inventory_item
+
+
+
+
+@router.put("/{inventory_id}", response_model=InventoryResponse)
+def update_inventory(
+    inventory_id: int,
+    inventory_data: InventoryUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(require_roles("admin", "manager"))
+):
+    inventory_item = db.query(Inventory).filter(
+        Inventory.id == inventory_id
+    ).first()
+
+    if inventory_item is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inventory record not found"
+        )
+
+    update_data = inventory_data.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(inventory_item, field, value)
+
+    db.commit()
+    db.refresh(inventory_item)
+
+    return inventory_item
+
+
+
+@router.delete("/{inventory_id}")
+def delete_inventory(
+    inventory_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(require_roles("admin", "manager"))
+):
+    inventory_item = db.query(Inventory).filter(
+        Inventory.id == inventory_id
+    ).first()
+
+    if inventory_item is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inventory record not found"
+        )
+
+    db.delete(inventory_item)
+    db.commit()
+
+    return {
+        "message": "Inventory record deleted successfully"
+    }
