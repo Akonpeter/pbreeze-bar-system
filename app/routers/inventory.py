@@ -79,6 +79,19 @@ def list_inventory(
 
 
 
+@router.get("/low-stock", response_model=list[InventoryResponse])
+def get_low_stock(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    low_stock_items = db.query(Inventory).filter(
+        Inventory.quantity <= Inventory.minimum_stock
+    ).all()
+
+    return low_stock_items
+
+
+
 @router.get(
     "/{inventory_id}",
     response_model=InventoryResponse
@@ -154,3 +167,4 @@ def delete_inventory(
     return {
         "message": "Inventory record deleted successfully"
     }
+

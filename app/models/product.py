@@ -64,5 +64,10 @@ class Product(Base):
        
     )
 
+    stock_movements = relationship(
+        "StockMovement",
+        back_populates="product"
+    )
+
     def __repr__(self):
         return f"<Product {self.name}>"

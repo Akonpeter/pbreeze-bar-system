@@ -11,7 +11,8 @@ from app.routers.users import router as users_router
 from app.routers.products import router as products_router
 from app.routers.categories import router as categories_router
 from app.routers.inventory import router as inventory_router
-
+from app.models.stock_movement import StockMovement
+from app.routers import stock_movements
 
   #Create database tables
 Base.metadata.create_all(bind=engine)
@@ -30,6 +31,7 @@ app.include_router(users_router)
 app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(inventory_router)
+app.include_router(stock_movements.router)
 
 
 @app.get("/")
