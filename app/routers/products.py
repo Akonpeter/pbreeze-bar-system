@@ -6,6 +6,9 @@ from app.core.database import get_db
 from app.models import Category, Product
 from app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
 from app.auth.dependencies import get_current_user, require_roles
+from app.core.security import get_current_user
+
+
 
 router = APIRouter(
     prefix="/products",
@@ -186,3 +189,13 @@ def delete_product(
     }
 
 
+
+@router.get("/search")
+def search_product(
+    name: str,
+    current_user=Depends(get_current_user)
+):
+    return {
+        "message": "Product found",
+        "product_name": name
+    }

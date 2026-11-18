@@ -13,6 +13,7 @@ from app.routers.categories import router as categories_router
 from app.routers.inventory import router as inventory_router
 from app.models.stock_movement import StockMovement
 from app.routers import stock_movements
+from app.routers import sales 
 
   #Create database tables
 Base.metadata.create_all(bind=engine)
@@ -32,7 +33,7 @@ app.include_router(products_router)
 app.include_router(categories_router)
 app.include_router(inventory_router)
 app.include_router(stock_movements.router)
-
+app.include_router(sales.router)
 
 @app.get("/")
 def root():

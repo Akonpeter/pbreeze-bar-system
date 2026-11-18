@@ -80,3 +80,51 @@ def create_stock_movement(
     db.refresh(stock_movement)
 
     return stock_movement
+
+    
+
+
+
+# def get_all_stock_movements(db: Session):
+#     stock_movements = db.query(StockMovement).order_by(
+#         StockMovement.created_at.desc()
+#     ).all()
+
+#     return stock_movements
+
+def get_all_stock_movements(
+    db: Session,                      
+    product_id: int | None = None,
+     movement_type: str | None = None
+    ):
+    query = db.query(StockMovement)
+
+    if product_id is not None:
+        query = query.filter(StockMovement.product_id == product_id)
+
+
+    if movement_type is not None:
+        query = query.filter(
+            StockMovement.movement_type == movement_type
+    )
+
+
+    stock_movements = query.order_by(
+        StockMovement.created_at.desc()
+    ).all()
+
+    return stock_movements
+
+
+def get_stock_movement_by_id(db: Session, movement_id: int):
+    stock_movement = db.query(StockMovement).filter(
+        StockMovement.id == movement_id
+    ).first()
+
+    if stock_movement is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Stock movement not found"
+        )
+
+    return stock_movement
