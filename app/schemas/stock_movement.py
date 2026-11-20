@@ -6,11 +6,21 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Literal
 
 
-MovementType = Literal[
+
+ManualMovementType = Literal[
     "purchase",
     "sale",
     "damage",
     "adjustment"
+]
+
+
+MovementType = Literal[
+    "purchase",
+    "sale",
+    "damage",
+    "adjustment",
+    "sale_cancellation"
 ]
 
 

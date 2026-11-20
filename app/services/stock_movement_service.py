@@ -42,7 +42,7 @@ def create_stock_movement(
     previous_quantity = Decimal(str(inventory.quantity))
     movement_quantity = movement_data.quantity
 
-    if movement_data.movement_type == "purchase":
+    if movement_data.movement_type in ("purchase", "sale_cancellation"):
         new_quantity = previous_quantity + movement_quantity
 
     elif movement_data.movement_type in ("sale", "damage"):

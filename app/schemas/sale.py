@@ -1,6 +1,7 @@
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
+from datetime import datetime
 
 
 class SaleItemCreate(BaseModel):
@@ -30,6 +31,19 @@ class SaleResponse(BaseModel):
     payment_method: Optional[str] = None
     status: str
     items: List[SaleItemResponse]
+    cancelled_at: Optional[datetime] = None
+    cancellation_reason: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+    # class Config:
+    #     from_attributes = True
+
+
+
+
+class SaleCancelRequest(BaseModel):
+    reason: str = Field(
+        min_length=3,
+        max_length=500
+    )

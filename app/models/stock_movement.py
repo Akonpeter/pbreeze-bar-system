@@ -54,3 +54,4 @@ class StockMovement(Base):
 
     def __repr__(self):
         return f"<StockMovement Product ID: {self.product_id}>"
+    
